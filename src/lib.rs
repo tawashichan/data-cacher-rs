@@ -42,7 +42,6 @@ impl <D: for<'de> serde::Deserialize<'de>,M: ResponseMapper<D>> CacheHolder<D,M>
         }
     }
 
-    // ここcloneせずにいい感じにやるほうほうあるんだろうか...
     pub async fn read_data(&self) -> Arc<Option<D>> {
         self.data.read().await.clone()
     }
