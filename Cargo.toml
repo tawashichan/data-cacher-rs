@@ -1,0 +1,14 @@
+[package]
+authors = ["irieryota <ryotairie123@gmail.com>"]
+edition = "2018"
+name = "data-cacher-rs"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+biscuit = "*"
+reqwest = {features = ["json"]}
+tokio = {feature = "full", version = "0.2.9"}
+serde = { version = "1.0", features = ["derive"] }
+async-trait = "*"
