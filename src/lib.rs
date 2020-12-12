@@ -21,14 +21,14 @@ pub trait DataFetcher<D> {
 
 impl <D: 'static + Send + Sync,F: 'static + DataFetcher<D> + Send + Sync> CacheHolder<D,F> {
 
-    pub async fn new(fetcher: F,interval: u64) -> Result<Self,F::E> {
+    pub async fn new(fetcher: F,interval: u64) -> Result<Arc<Self>,F::E> {
         let rorator = CacheHolder{
             data: Arc::new(RwLock::new(Arc::new(None))),
             fetcher: fetcher,
             interval,
         };
         //rorator.update_data().await?;
-        Ok(rorator)
+        Ok(Arc::new(rorator))
     }
 
     pub fn rotate(self: Arc<Self>) -> () {
@@ -85,7 +85,7 @@ mod tests {
 
         let fetcher = Fetcher{};
 
-        let holder = std::sync::Arc::new(crate::CacheHolder::new(fetcher,1).await?);
+        let holder =  crate::CacheHolder::new(fetcher,1).await?;
         let value = holder.clone().read_data().await;
         println!("{:?}",value);
         holder.clone().rotate(); 
