@@ -6,7 +6,7 @@ use async_trait::async_trait;
 use std::marker::{Send,Sync};
 
 
-struct CacheHolder<D: Send + Sync + std::fmt::Debug,F: DataFetcher<D> + Send + Sync> {
+pub struct CacheHolder<D: Send + Sync + std::fmt::Debug,F: DataFetcher<D> + Send + Sync> {
     // use Arc to avoid cloning D
     data: Arc<RwLock<Arc<Option<D>>>>,
     fetcher: F,
