@@ -6,7 +6,7 @@ use async_trait::async_trait;
 use std::marker::{Send,Sync};
 
 
-pub struct CacheHolder<D: Send + Sync + std::fmt::Debug,F: DataFetcher<D> + Send + Sync> {
+pub struct CacheHolder<D: Send + Sync,F: DataFetcher<D> + Send + Sync> {
     // use Arc to avoid cloning D
     data: Arc<RwLock<Arc<Option<D>>>>,
     fetcher: F,
@@ -19,7 +19,7 @@ pub trait DataFetcher<D> {
     async fn fetch(&self) -> Result<D,Self::E>; 
 }
 
-impl <D: 'static + Send + Sync + std::fmt::Debug,F: 'static + DataFetcher<D> + Send + Sync> CacheHolder<D,F> {
+impl <D: 'static + Send + Sync,F: 'static + DataFetcher<D> + Send + Sync> CacheHolder<D,F> {
 
     pub async fn new(fetcher: F,interval: u64) -> Result<Self,F::E> {
         let rorator = CacheHolder{
