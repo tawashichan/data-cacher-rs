@@ -33,9 +33,7 @@ impl <D: 'static + Send + Sync + std::fmt::Debug,F: 'static + DataFetcher<D> + S
 
     pub fn rotate(self: Arc<Self>) -> () {
         tokio::spawn(async move {
-            println!("spawned");
             loop {
-                println!("running...");
                 let _ = tokio::time::sleep(std::time::Duration::new(self.interval, 0)).await;
                 self.update_data().await;
             }
